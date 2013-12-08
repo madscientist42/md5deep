@@ -1,0 +1,6 @@
+/usr/local/bin/hashdeep
+/usr/local/bin/md5deep
+/usr/local/bin/sha1deep
+/usr/local/bin/sha256deep
+/usr/local/bin/tigerdeep
+/usr/local/bin/whirlpooldeep

@@ -1,0 +1,14 @@
+The project checked out from the GitHub repository requires CMake 2.6 
+or later to build and install.  Building is straightforward- cmake .
+in the main project directory will generate a build-system file.  
+
+From there, running the build system should produce a binary set.
+
+From there, running the build system with the "install" option
+will pour it onto the system in the "right" place.
+
+Right now, this has been tested on Linux and should allow for cross-
+compilation, etc. and work as intended.  There are going to be some 
+gaps for what's needed for Solaris, Windows, etc.  Patch submissions
+are welcome to handle building up the binaries in the case of 
+systems where symlinks aren't produced, etc.
