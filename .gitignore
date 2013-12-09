@@ -1,0 +1,11 @@
+*~
+Makefile
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+hashdeep
+md5deep
+sha1deep
+sha256deep
+tigerdeep
+whirlpooldeep

@@ -11,9 +11,12 @@ ADD_EXECUTABLE(hashdeep ${ALGORITHM_FILES} ${MAIN_CODE_FILES})
 # Add a custom target that builds symlinks for the other "commands" that would normally be built with
 # the original Autotools setup.  The code works like busybox does on dispatch- so they were building
 # it over and over again.  Don't need that.
-ADD_CUSTOM_TARGET(BUILD_COMMAND_SYMLINKS DEPENDS hashdeep COMMAND generate_symlinks.sh COMMENT "Generating Symlinks for simplified commands")
+LIST(APPEND APP_SYMLINKS md5deep sha1deep sha256deep tigerdeep whirlpooldeep)
+FOREACH(SYMLINK ${APP_SYMLINKS})
+	ADD_CUSTOM_TARGET(${SYMLINK} ALL DEPENDS hashdeep COMMAND rm -f ${SYMLINK} COMMAND ln -s hashdeep ${SYMLINK})
+ENDFOREACH(SYMLINK ${APP_SYMLINKS})
 
 # Now, define the installs here for the apps part...
 INSTALL(PROGRAMS hashdeep DESTINATION bin)
-INSTALL(FILES md5deep sha1deep sha256deep tigerdeep whirlpooldeep DESTINATION bin)
+INSTALL(FILES ${APP_SYMLINKS} DESTINATION bin)
                   
