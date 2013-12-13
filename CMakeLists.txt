@@ -8,8 +8,8 @@ SET(PACKAGE_STRING "hashdeep-4.4")
 SET(PACKAGE_VERSION "4.4")
 SET(PACKAGE_BUGREPORT "Frank C. Earl (linusti@gmail.com)")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -D__USE_FILE_OFFSET64=1")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread -D__USE_FILE_OFFSET64=1")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread")
 
 # Macro includes...
 INCLUDE (CheckIncludeFiles)
