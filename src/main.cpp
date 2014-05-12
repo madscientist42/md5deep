@@ -206,7 +206,6 @@ void state::md5deep_usage(void)
 	switch (usage_count)
 	{
 	case 2: // -hh
-		cout << "Well FUCK me, RUNNING!" << endl;
 		ocb.status("-S        - Silent mode, but warn on bad hashes");
 		ocb.status("-0        - use a NUL (\\0) for newline.");
 		ocb.status("-k        - print asterisk before filename");
