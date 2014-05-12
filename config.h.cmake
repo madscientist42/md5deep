@@ -262,7 +262,7 @@
 #cmakedefine __EXTENSIONS__ @__EXTENSIONS__@
 
 /* Version number of package */
-#cmakedefine VERSION @VERSION@
+#cmakedefine VERSION "@VERSION@"
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
