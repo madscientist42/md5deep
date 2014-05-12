@@ -2,7 +2,7 @@
  * main.h:
  *
  * This is the main file included by all other modules in md5deep/hashdeep/etc.
- * 
+ *
  * It includes:
  * common.h - the common system include files
  * xml.h    - the C++ XML system.
@@ -47,8 +47,8 @@
   * Add a value for the algorithm to the hashid_t enumeration
   * Add the functions to compute the hashes. There should be three functions,
     an initialization route, an update routine, and a finalize routine.
-    The convention, for an algorithm "foo", is 
-    foo_init, foo_update, and foo_final. 
+    The convention, for an algorithm "foo", is
+    foo_init, foo_update, and foo_final.
   * Add your new code to Makefile.am under hashdeep_SOURCES
   * Add a call to insert the algorithm in state::load_hashing_algorithms
   * See if you need to increase MAX_ALGORITHM_NAME_LENGTH or
@@ -56,16 +56,16 @@
   * Update the usage function and man page to include the function
   */
 
-typedef enum { 
-  alg_md5=0, 
-  alg_sha1, 
-  alg_sha256, 
+typedef enum {
+  alg_md5=0,
+  alg_sha1,
+  alg_sha256,
   alg_tiger,
-  alg_whirlpool, 
-  
+  alg_whirlpool,
+
   /* alg_unknown must always be last in this list. It's used
      as a loop terminator in many functions. */
-  alg_unknown 
+  alg_unknown
 } hashid_t;
 
 inline std::ostream & operator << (std::ostream &os,const hashid_t &h) {
@@ -128,7 +128,7 @@ public:
     void ( *f_finalize)(void *ctx, unsigned char *);
 
     /* The methods */
-    static void add_algorithm(hashid_t pos, const char *name, uint16_t bits, 
+    static void add_algorithm(hashid_t pos, const char *name, uint16_t bits,
 			      void ( *func_init)(void *ctx),
 			      void ( *func_update)(void *ctx, const unsigned char *buf, size_t len ),
 			      void ( *func_finalize)(void *ctx, unsigned char *),
@@ -147,7 +147,7 @@ extern algorithm_t     hashes[NUM_ALGORITHMS];		// which hash algorithms are ava
 
 
 /** status_t describes exit codes for the program
- * 
+ *
  */
 class status_t  {
 private:
@@ -162,7 +162,7 @@ public:;
     static const int32_t status_omg_ponies = -5;
 
     /*
-     * Return values for the program 
+     * Return values for the program
      * RBF - Document these return values for hashdeep
      * A successful run has these or'ed together
      */
@@ -191,7 +191,7 @@ typedef std::string	filename_t;
  * It also includes a stat call that returns the inode information
  * and link count even on windows, where the API is different than stat.
  * Note that we only include information we care about in this program
- * 
+ *
  * this is in dig.cpp.
  */
 
@@ -214,7 +214,7 @@ public:
     static file_types decode_file_type(const struct __stat64 &sb);
 
     // stat a file, print an error and return -1 if it fails, otherwise return 0
-    static int stat(const filename_t &path,file_metadata_t *m,class display &ocb); 
+    static int stat(const filename_t &path,file_metadata_t *m,class display &ocb);
     class fileid_t {				      // uniquely defines a file on this system
     public:
 	fileid_t():dev(0),ino(0){};
@@ -231,11 +231,11 @@ public:
     timestamp_t ctime;
     timestamp_t mtime;
     timestamp_t atime;
-    
+
 };
 
 /** file_data_t contains information about a file.
- * It can be created by hashing an actual file, or by reading a hash file a file of hashes. 
+ * It can be created by hashing an actual file, or by reading a hash file a file of hashes.
  * The object is simple so that the built in C++ shallow copy will make a proper copy of it.
  * Note that all hashes are currently stored as a hex string. That incurs a 2x memory overhead.
  * This will be changed.
@@ -264,7 +264,7 @@ public:;
     hash_context_obj():read_offset(0),read_len(0){}
 
     /* Information for the hashing underway */
-    uint8_t	hash_context[NUM_ALGORITHMS][MAX_ALGORITHM_CONTEXT_SIZE];	 
+    uint8_t	hash_context[NUM_ALGORITHMS][MAX_ALGORITHM_CONTEXT_SIZE];
 
     /* The actual hashing */
     void multihash_initialize();
@@ -319,7 +319,7 @@ public:
 
     /* Where the results go */
     class display *ocb;
-    
+
     /* How we read the data */
     FILE        *handle;		// the file we are reading
     int		fd;			// fd used for unbuffered and mmap
@@ -334,8 +334,8 @@ public:
     void	compute_dfxml(bool known_hash,const hash_context_obj *hc);
 
     timestamp_t	ctime;		// ctime; previously 'timestamp'
-    timestamp_t	mtime;		
-    timestamp_t	atime;		
+    timestamp_t	mtime;
+    timestamp_t	atime;
 
     // How many bytes (and megs) we think are in the file, via stat(2)
     // and how many bytes we've actually read in the file
@@ -367,7 +367,7 @@ public:
  * state->known is used to hold the audit file that is loaded.
  * state->seen is used to hold the hashes seen on the current run.
  * We store multiple maps for each algorithm number which map the hash hex code
- * to the pointer as well. 
+ * to the pointer as well.
  *
  * the hashlist.cpp file contains the implementation. It's largely taken
  * from the v3 audit.cpp and match.cpp files.
@@ -379,9 +379,9 @@ class hashlist : public std::vector<file_data_t *> {
      * algorithms plus a column for file size, file name, and, well,
      * some fudge factors. Any values after this number will be
      * ignored. For example, if the user invokes the program as:
-     * 
+     *
      * hashdeep -c md5,md5,md5,md5,...,md5,md5,md5,md5,md5,md5,md5,whirlpool
-     * 
+     *
      * the whirlpool will not be registered.
      */
 
@@ -395,20 +395,20 @@ public:;
 	status_contains_no_hashes,
 	status_file_error
     } loadstatus_t;
-    
+
     typedef enum   {
 	searchstatus_ok = 0,
-	
+
 	/* Matching hashes */
 	status_match,			// all hashes match
 	status_partial_match,	 /* One or more hashes match, but not all */
 	status_file_size_mismatch,   /* Implies all hashes match */
-	status_file_name_mismatch,   /* Implies all hashes and file size match */   
+	status_file_name_mismatch,   /* Implies all hashes and file size match */
 	status_no_match             /* Implies none of the hashes match */
     } searchstatus_t;
     static const char *searchstatus_to_str(searchstatus_t val);
 
-    // Types of files that contain known hashes 
+    // Types of files that contain known hashes
     typedef enum   {
 	file_plain,
 	file_bsd,
@@ -418,13 +418,13 @@ public:;
 	file_encase3,
 	file_encase4,
 	file_ilook,
-	
-	// Files generated by md5deep with the ten digit filesize at the start 
+
+	// Files generated by md5deep with the ten digit filesize at the start
 	// of each line
 	file_md5deep_size,
 	file_hashdeep_10,
 	file_unknown
-    } hashfile_format; 
+    } hashfile_format;
 
     class hashmap : public  std::multimap<std::string,file_data_t *> {
     public:;
@@ -444,13 +444,13 @@ public:;
      */
     file_data_t	*find_hash(hashid_t alg,const std::string &hash_hex,
 				   const std::string &file_name,
-				   uint64_t file_number); 
+				   uint64_t file_number);
 
     /**
      * look up a fdt by hash code(s) and return if it is present or not.
      * optionally return a pointer to it as well.
      */
-    searchstatus_t	search(const file_data_hasher_t *fdht, file_data_t ** matched) ; 
+    searchstatus_t	search(const file_data_hasher_t *fdht, file_data_t ** matched) ;
     uint64_t		total_matched(); // return the total matched from all calls to search()
 
     /****************************************************************/
@@ -471,7 +471,7 @@ public:;
     loadstatus_t	load_hash_file(class display *ocb,const std::string &fn); // not tstring! always ASCII
 
     void		dump_hashlist(); // send contents to stdout
-    
+
     /**
      * add_fdt adds a file_data_t record to the hashlist, and its hashes to all the hashmaps.
      * @param fi - a file_data_t to add. Don't erase it; we're going to use it (and modify it)
@@ -480,15 +480,15 @@ public:;
 };
 
 /* Primary modes of operation (primary_function) */
-typedef enum  { 
-  primary_compute=0, 
-  primary_match=1, 
-  primary_match_neg=2, 
-  primary_audit=3				
-} primary_t; 
+typedef enum  {
+  primary_compute=0,
+  primary_match=1,
+  primary_match_neg=2,
+  primary_audit=3
+} primary_t;
 
 
-// These are the types of files that we can match against 
+// These are the types of files that we can match against
 #define TYPE_PLAIN        0
 #define TYPE_BSD          1
 #define TYPE_HASHKEEPER   2
@@ -507,7 +507,7 @@ public:
     audit_stats():exact(0), expect(0), partial(0), moved(0), unused(0), unknown(0), total(0){
     };
     /* For audit mode, the number of each type of file */
-    uint64_t	exact, expect, partial; // 
+    uint64_t	exact, expect, partial; //
     uint64_t	moved, unused, unknown, total; //
     void clear(){
 	exact = 0;
@@ -540,13 +540,14 @@ public:
  */
 class display {
  private:
+	char 	msgBuf[1024];
     mutable mutex_t	M;	// lock for anything in output section
     void lock() const	{ M.lock(); }
     void unlock() const { M.unlock(); }
 
     /* all display state variables are protected by M and must be private */
     std::ostream	*out;		// where things get sent
-    std::ofstream       myoutstream;	// if we open it
+    std::ofstream   myoutstream;	// if we open it
     std::string		utf8_banner;	// banner to be displayed
     bool		banner_displayed;	// has the header been shown (text output)
     XML			*dfxml;			/* output in DFXML */
@@ -586,7 +587,7 @@ public:
 	opt_threadcount(0),
 #endif
 	size_threshold(0),
-	piecewise_size(0),	
+	piecewise_size(0),
 	primary_function(primary_compute){
     }
 
@@ -674,7 +675,7 @@ public:
     void	display_hash_simple(file_data_hasher_t *fdt,const hash_context_obj *hc);
 
     /* The following routines are for printing and outputing filenames.
-     * 
+     *
      * fmt_filename formats the filename.
      * On Windows this version outputs as UTF-8 unless unicode quoting is requested,
      * in which case Unicode characters are emited as U+xxxx.
@@ -694,12 +695,12 @@ public:
     // Display an ordinary message with newline added
     void	status(const char *fmt, ...) __attribute__((format(printf, 2, 0))); // note that 1 is 'self'
 
-    // Display an error message if not in silent mode 
+    // Display an error message if not in silent mode
     void	error(const char *fmt, ...) __attribute__((format(printf, 2, 0)));
 
     // Display an error message if not in silent mode and exit
     void	fatal_error(const char *fmt, ...) __attribute__((format(printf, 2, 0))) __attribute__ ((__noreturn__));
-    // Display an error message, ask user to contact the developer, 
+    // Display an error message, ask user to contact the developer,
     void	internal_error(const char *fmt, ...) __attribute__((format(printf, 2, 0))) __attribute__ ((__noreturn__));
     void	print_debug(const char *fmt, ...) __attribute__((format(printf, 2, 0)));
     void	error_filename(const std::string &fn, const char *fmt, ...) __attribute__((format(printf, 3, 0))) ;
@@ -786,7 +787,7 @@ public:;
 
  state():mode_recursive(false),	// do we recurse?
       mode_warn_only(false),	// for loading hash files
-      
+
       // these determine which files get hashed
       mode_expert(false),
       mode_regular(false),
@@ -801,7 +802,7 @@ public:;
 
       // command line argument
       argc(0),argv(0),
-      
+
       // these have something to do with hash files that are loaded
       h_field(0),
       h_plain(0),h_bsd(0),
@@ -824,7 +825,7 @@ public:;
     bool	mode_socket;
     bool	mode_symlink;
     bool        mode_winpe;
- 
+
 
     /* Command line arguments */
     std::string opt_input_list;		// file with a list of files to read
@@ -862,12 +863,12 @@ public:;
     int		md5deep_process_command_line(int argc,char **argv);
 #ifdef _WIN32
     int		prepare_windows_command_line();
-#endif    
+#endif
 
     /* files.cpp
      * Not quite sure what to do with this stuff yet...
      */
-    
+
     void	md5deep_load_match_file(const char *fn);
     int		find_hash_in_line(char *buf, int fileType, char *filename);
     int		parse_encase_file(const char *fn,FILE *f,uint32_t num_expected_hashes);
@@ -878,7 +879,7 @@ public:;
     int		find_ilook_hash(char *buf, char *known_fn);
     int		check_for_encase(FILE *f,uint32_t *expected_hashes);
 
-    /* dig.cpp 
+    /* dig.cpp
      *
      * Note the file typing system needs to be able to display errors...
      */
@@ -889,7 +890,7 @@ public:;
     void	done_processing_dir(const tstring &fn_);
     void	processing_dir(const tstring &fn_);
     bool	have_processed_dir(const tstring &fn_);
-    
+
 
     int		identify_hash_file_type(FILE *f,uint32_t *expected_hashes); // identify the hash file type
     bool	should_hash_symlink(const tstring &fn,file_types *link_type);
@@ -908,7 +909,7 @@ public:;
 #endif
     void	clean_name_posix(std::string &fn);
     void	process_dir(const tstring &path);
-    void	dig_normal(const tstring &path);	// posix  & win32 
+    void	dig_normal(const tstring &path);	// posix  & win32
     void	dig_win32(const tstring &path);	// win32 only; calls dig_normal
     static	void dig_self_test();
 
@@ -939,20 +940,20 @@ extern hashid_t opt_md5deep_mode_algorithm;	// for when we are in MD5DEEP mode
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
 std::vector<std::string> split(const std::string &s, char delim);
 void lowercase(std::string &s);
-extern std::string progname;		// formerly const char *__progname 
+extern std::string progname;		// formerly const char *__progname
 
 // ------------------------------------------------------------------
 // HELPER FUNCTIONS
 //
-// helper.cpp 
+// helper.cpp
 // ------------------------------------------------------------------
 
 void     chop_line(char *s);
-off_t	find_file_size(FILE *f,class display *ocb); // Return the size, in bytes of an open file stream. On error, return -1 
+off_t	find_file_size(FILE *f,class display *ocb); // Return the size, in bytes of an open file stream. On error, return -1
 
 // ------------------------------------------------------------------
 // MAIN PROCESSING
-// ------------------------------------------------------------------ 
+// ------------------------------------------------------------------
 /* dig.cpp */
 void dig_self_test();			// check the string-processing
 
