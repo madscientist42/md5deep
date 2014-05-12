@@ -5,6 +5,7 @@ Makefile
 CMakeFiles
 CMakeCache.txt
 cmake_install.cmake
+config.h
 hashdeep
 md5deep
 sha1deep
